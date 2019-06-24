@@ -28,6 +28,13 @@
 <script>
 import API from '../api/IEX';
 import _ from 'underscore';
+
+const sortCompaniesReverse = (companies) => {
+    return _.sortBy(companies, 'symbol').reverse();
+}
+const sortCompanies = (companies) => {
+    return _.sortBy(companies, 'symbol');
+}
 const searchCompanies = (companies, key, query) => {
     return _.filter(companies,
         (obj) => {
@@ -54,7 +61,6 @@ const filterCompanies = (companies, prefix) => {
     )
 }
 
-
 export default {
     name : "Symbols",
     data () {
@@ -63,10 +69,19 @@ export default {
             companies : [],
         };
     },
+    beforeCreate() {
+        console.log('I am beforecreated!');
+    },
+    created() {
+        console.log('I am created!');
+    },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
             return response.data;
-        }).then(companies => {
+        })
+        .then(companies => {
+            sortCompanies(companies)
+            sortCompaniesReverse(companies)
             searchCompanies(companies, 'companyName', 'Al')
             return filterCompanies(companies, ['open', 'close'])
         }).then(companies => {
@@ -75,6 +90,15 @@ export default {
             this.loading = false;
         });
     },
+    mounted() {
+        console.log('I am now mounted!');
+    },
+    beforeDestroy() {
+        console.log('before the component is destroyed');
+    },
+    destroyed() {
+        console.log('the components gone.');
+    }
 }
 </script>
 
