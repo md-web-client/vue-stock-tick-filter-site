@@ -3,7 +3,7 @@
       <div class="primary-heading-con">
         <div class="heading">
             <div class="title">Symbols/Tickers</div>
-            <input v-model="searchText" />
+            <input v-model="searchText" placeholder="Search" />
             <button @click="searchButton">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
@@ -14,7 +14,7 @@
           <loading v-if="loading"></loading>
           <div v-else>
               <div
-                  v-for="company in companies"
+                  v-for="company in searchedCompanies"
                   :key="company.symbol"
                   class="company"
               >
@@ -69,8 +69,8 @@ const shrink = (companies) => [companies[0]]
 export default {
     name : "Symbols",
     methods : {
-        searchButton : function () {
-            return this.companies = shrink(this.companies);
+        searchButton : function (searchText) {
+            return this.companies = searchCompanies(this.companies, 'companyName', searchText)
         }
     },
     data () {
@@ -79,17 +79,22 @@ export default {
             loading : true,
             companies : [],
             searchText : '',
-            finds : []
+            finds : [],
+            searchedCompanies: [],
         };
     },
     watch : {
-        searchText : function () { 
-            return this.companies = shrink(this.companies); 
+        searchText : function (searchText) {
+            return this.searchedCompanies = searchCompanies(this.companies, 'companyName', searchText)
         }
     },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
             return response.data;
+        })
+        .then(companies => {
+            this.searchedCompanies = companies
+            return companies
         })
         .then(companies => {
             sortCompanies(companies)
