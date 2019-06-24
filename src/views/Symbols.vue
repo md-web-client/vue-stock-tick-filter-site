@@ -2,7 +2,7 @@
     <div>
       <div class="primary-heading-con">
           <div class="heading">
-              <div class="title">Symbols/Tickers</div>
+              <div class="title">Symbols/ Tickers</div>
           </div>
       </div>
 
@@ -27,6 +27,27 @@
 
 <script>
 import API from '../api/IEX';
+import _ from 'underscore';
+const filterCompanies = (companies, prefix) => {
+    return _.filter(companies,
+        (obj) => {
+            return prefix.includes('open') && prefix.includes('close' )  ?
+            (
+                console.log('reached1'), obj.close && obj.open
+            )
+            : prefix.includes('open') ?
+            (
+                console.log('reached2'), obj.open
+            )
+            : prefix.includes('close') ?
+            (
+                console.log('reached3'), obj.close
+            ) :
+            false
+        }
+    )
+}
+
 export default {
     name : "Symbols",
     data () {
@@ -37,8 +58,14 @@ export default {
     },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
-            this.companies = response.data;
-        }).finally(() => {
+            return response.data;
+        }).then(companies => {
+            return filterCompanies(companies, ['open', 'close'])
+        })
+        .then(companies => {
+            this.companies  = companies
+        })
+        .finally(() => {
             this.loading = false;
         });
     },
