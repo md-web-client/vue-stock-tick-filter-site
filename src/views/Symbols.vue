@@ -3,8 +3,12 @@
       <div class="primary-heading-con">
         <div class="heading">
             <div class="title">Symbols/Tickers</div>
-            <input v-model="searchText" placeholder="Search" />
-            <button @click="searchButton">
+            <input @click="clearCompany" v-model="searchSymbolText" placeholder="Search Symbol" />
+            <button @click="searchCompanyButton">
+                <i class="fa fa-search" aria-hidden="true"></i>
+            </button> &nbsp;&nbsp;&nbsp;&nbsp;
+            <input @click="clearSymbol" v-model="searchCompanyText" placeholder="Search Company Name" />
+            <button @click="searchSymbolButton">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
             <h2>Filter Logic</h2>
@@ -55,6 +59,7 @@ const sortCompanies = (companies) => {
     return _.sortBy(companies, 'symbol');
 }
 const searchCompanies = (companies, key, query) => {
+    if (!query){return companies}
     return _.filter(companies,
         (obj) => {
             return obj[key].includes(query)
@@ -68,7 +73,6 @@ const filterCompanies = (companies, prefix) => {
                 const key = prefix[count]
                 const valueExists = obj[key] ? true : false
                 if(valueExists) {
-                    console.log({key, valueExists, symbol : obj.symbol})
                     continue;
                 }
                 else {
@@ -84,8 +88,19 @@ const shrink = (companies) => [companies[0]]
 export default {
     name : "Symbols",
     methods : {
-        searchButton : function (searchText) {
-            return this.companies = searchCompanies(this.companies, 'companyName', searchText)
+        searchSymbolButton : function () {
+            // nothing needed to be done.
+        },
+        searchCompanyButton : function () {
+            // nothing needed to be done.
+        },
+        clearCompany: function () {
+            this.searchKey = 'symbol'
+            this.searchCompanyText = ''
+        },
+        clearSymbol: function () {
+            this.searchKey = 'companyName'
+            this.searchSymbolText = ''
         }
     },
     data () {
@@ -93,20 +108,30 @@ export default {
             value : '',
             loading : true,
             companies : [],
-            searchText : '',
+            searchSymbolText : '',
+            searchCompanyText: '',
+            searchText: '',
             finds : [],
             searchedCompanies: [],
+            filteredCompanies: [],
             filterArray: [],
-            checkboxArray: [],
+            searchKey: 'symbol',
+            checkboxArray: [false, false, false, false],
         };
     },
     watch : {
-        searchText : function (searchText) {
-            return this.searchedCompanies = searchCompanies(this.companies, 'companyName', searchText)
+        searchSymbolText : function (searchSymbolText) {
+            this.searchText = searchSymbolText;
+            return this.searchedCompanies = searchCompanies(this.filteredCompanies, this.searchKey, searchSymbolText)
+        },
+        searchCompanyText : function (searchCompanyText) {
+            this.searchText = searchCompanyText;
+            return this.searchedCompanies = searchCompanies(this.filteredCompanies, this.searchKey, searchCompanyText)
         },
         checkboxArray: function (checkboxArray) {
             const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => checkboxArray[index]);
-            this.searchedCompanies = filterCompanies(this.companies, tempFilter );
+            this.filteredCompanies = filterCompanies(this.companies, tempFilter );
+            this.searchedCompanies = searchCompanies(this.filteredCompanies, this.searchKey, this.searchText)
         },
     },
     beforeMount () {
@@ -114,13 +139,14 @@ export default {
             return response.data;
         })
         .then(companies => {
+            this.filteredCompanies = companies
             this.searchedCompanies = companies
+            this.companies = companies
             return companies
         })
         .then(companies => {
             sortCompanies(companies)
             sortCompaniesReverse(companies)
-            searchCompanies(companies, 'companyName', 'Al')
             filterCompanies(companies, ['open', 'close'])
             return companies
         }).then(companies => {
