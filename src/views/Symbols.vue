@@ -31,19 +31,18 @@ import _ from 'underscore';
 const filterCompanies = (companies, prefix) => {
     return _.filter(companies,
         (obj) => {
-            return prefix.includes('open') && prefix.includes('close' )  ?
-            (
-                console.log('reached1'), obj.close && obj.open
-            )
-            : prefix.includes('open') ?
-            (
-                console.log('reached2'), obj.open
-            )
-            : prefix.includes('close') ?
-            (
-                console.log('reached3'), obj.close
-            ) :
-            false
+            for(let count = 0; count < prefix.length; count++){
+                const key = prefix[count]
+                const valueExists = obj[key] ? true : false
+                if(valueExists) {
+                    console.log({key, valueExists, symbol: obj.symbol})
+                    continue;
+                }
+                else {
+                    return false
+                }
+            }
+            return true
         }
     )
 }
