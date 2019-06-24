@@ -2,7 +2,7 @@
     <div>
       <div class="primary-heading-con">
           <div class="heading">
-              <div class="title">Symbols/Tickers</div>
+              <div class="title">Symbols/ Tickers</div>
           </div>
       </div>
 
