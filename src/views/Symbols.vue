@@ -12,20 +12,28 @@
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
             <h2>Filter Logic</h2>
-            <ul class="centerx">
-                <li>
-                    <input type="checkbox" v-model="checkboxArray[0]" /> Symbol
-                </li>
-                <li>
-                    <input type="checkbox" v-model="checkboxArray[1]" /> Open
-                </li>
-                <li>
-                    <input type="checkbox" v-model="checkboxArray[2]" /> Close
-                </li>
-                <li>
-                    <input type="checkbox" v-model="checkboxArray[3]" /> Primary Exchange
-                </li>
-            </ul>
+            <div class="is-flex">
+                <ul class="centerx">
+                    <li>
+                        <input type="checkbox" v-model="checkboxArray[0]" /> Symbol
+                    </li>
+                    <li>
+                        <input type="checkbox" v-model="checkboxArray[1]" /> Open
+                    </li>
+                    <li>
+                        <input type="checkbox" v-model="checkboxArray[2]" /> Close
+                    </li>
+                    <li>
+                        <input type="checkbox" v-model="checkboxArray[3]" /> Primary Exchange
+                    </li>
+                </ul>
+                <div style="display: flex; flex-direction: column; justify-content: space-between;">
+                 <button @click="ascend">Ascending</button>
+                 <button @click="descend">Descending</button>
+                 <button @click="removeSort">Remove Sort</button>
+                </div>
+
+            </div>
         </div>
       </div>
 
@@ -52,11 +60,20 @@
 import API from '../api/IEX';
 import _ from 'underscore';
 
-const sortCompaniesReverse = (companies) => {
-    return _.sortBy(companies, 'symbol').reverse();
+
+const sortCompanies = (companies, key) => {
+    return _.sortBy(companies, key);
 }
-const sortCompanies = (companies) => {
-    return _.sortBy(companies, 'symbol');
+const sortCompaniesReverse = (companies, key) => {
+    return _.sortBy(companies, key).reverse();
+}
+const sort = (companies, key, direction) => {
+    return direction === 'ascend' ?
+    sortCompanies(companies, key) :
+    direction === 'descend' ?
+    sortCompaniesReverse(companies, key) :
+    companies;
+
 }
 const searchCompanies = (companies, key, query) => {
     if (!query){return companies}
@@ -101,6 +118,21 @@ export default {
         clearSymbol: function () {
             this.searchKey = 'companyName'
             this.searchSymbolText = ''
+        },
+        ascend: function () {
+            this.sortKey = 'ascend'
+            this.searchedCompanies = sort(this.searchedCompanies, this.searchKey, this.sortKey)
+        },
+        descend: function () {
+            this.sortKey = 'descend'
+            this.searchedCompanies = sort(this.searchedCompanies, this.searchKey, this.sortKey)
+        },
+        removeSort: function () {
+            this.sortKey = 'none'
+            const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => this.checkboxArray[index]);
+            this.filteredCompanies = filterCompanies(this.companies, tempFilter );
+            const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
+            this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, this.searchText)
         }
     },
     data () {
@@ -116,22 +148,26 @@ export default {
             filteredCompanies: [],
             filterArray: [],
             searchKey: 'symbol',
+            sortKey: 'none',
             checkboxArray: [false, false, false, false],
         };
     },
     watch : {
         searchSymbolText : function (searchSymbolText) {
             this.searchText = searchSymbolText;
-            return this.searchedCompanies = searchCompanies(this.filteredCompanies, this.searchKey, searchSymbolText)
+            const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
+            return this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, searchSymbolText)
         },
         searchCompanyText : function (searchCompanyText) {
             this.searchText = searchCompanyText;
-            return this.searchedCompanies = searchCompanies(this.filteredCompanies, this.searchKey, searchCompanyText)
+            const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
+            return this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, searchCompanyText)
         },
         checkboxArray: function (checkboxArray) {
             const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => checkboxArray[index]);
             this.filteredCompanies = filterCompanies(this.companies, tempFilter );
-            this.searchedCompanies = searchCompanies(this.filteredCompanies, this.searchKey, this.searchText)
+            const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
+            this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, this.searchText)
         },
     },
     beforeMount () {
