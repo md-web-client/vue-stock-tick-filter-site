@@ -2,7 +2,7 @@
     <div>
       <div class="primary-heading-con">
           <div class="heading">
-              <div class="title">Symbols/Tickers</div>
+              <div class="title">Symbols/ Tickers</div>
           </div>
       </div>
 
@@ -35,6 +35,26 @@ const searchCompanies = (companies, key, query) => {
         }
     )
 }
+const filterCompanies = (companies, prefix) => {
+    return _.filter(companies,
+        (obj) => {
+            for(let count = 0; count < prefix.length; count++){
+                const key = prefix[count]
+                const valueExists = obj[key] ? true : false
+                if(valueExists) {
+                    console.log({key, valueExists, symbol : obj.symbol})
+                    continue;
+                }
+                else {
+                    return false
+                }
+            }
+            return true
+        }
+    )
+}
+
+
 export default {
     name : "Symbols",
     data () {
@@ -47,7 +67,8 @@ export default {
         API.getComputerHardwareCompanies().then(response => {
             return response.data;
         }).then(companies => {
-            return searchCompanies(companies, 'companyName', 'Al')
+            searchCompanies(companies, 'companyName', 'Al')
+            return filterCompanies(companies, ['open', 'close'])
         }).then(companies => {
             this.companies  = companies
         }).finally(() => {

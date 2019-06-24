@@ -31,6 +31,15 @@ export default {
     computed : {
         time () {
 
+            // // look at the values used for the time function.
+            // if(this.value){
+            //     let now = new Date().getTime();
+            //     let full = moment.utc(this.value).local().format('M/D/YY h:mm:ss A'),
+            //         parts = full.split(' '),
+            //         part;
+            //     console.log({full: this.isFull, value: this.value, notime: this.noTime, now, full, parts, part})
+            // }
+
             if(!this.value){
                 return {
                     full : this.or,
@@ -55,7 +64,7 @@ export default {
             if(this.value < now + one_day && this.value > now - one_day){
                 part = moment.utc(this.value).local().format('h:mm A');
             } else {
-                part = parts[0];
+                part = moment.utc(this.value).local().format('h:mm A');
             }//el
 
             return {
