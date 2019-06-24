@@ -28,10 +28,10 @@
 <script>
 import API from '../api/IEX';
 import _ from 'underscore';
-const searchCompanies = (companies, query) => {
+const searchCompanies = (companies, key, query) => {
     return _.filter(companies,
         (obj) => {
-            return obj.companyName.includes(query)
+            return obj[key].includes(query)
         }
     )
 }
@@ -47,7 +47,7 @@ export default {
         API.getComputerHardwareCompanies().then(response => {
             return response.data;
         }).then(companies => {
-            return searchCompanies(companies, 'Alaska')
+            return searchCompanies(companies, 'companyName', 'Al')
         }).then(companies => {
             this.companies  = companies
         }).finally(() => {
