@@ -7,6 +7,21 @@
             <button @click="searchButton">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
+            <h2>Filter Logic</h2>
+            <ul class="centerx">
+                <li>
+                    <input type="checkbox" v-model="checkboxArray[0]" /> Symbol
+                </li>
+                <li>
+                    <input type="checkbox" v-model="checkboxArray[1]" /> Open
+                </li>
+                <li>
+                    <input type="checkbox" v-model="checkboxArray[2]" /> Close
+                </li>
+                <li>
+                    <input type="checkbox" v-model="checkboxArray[3]" /> Primary Exchange
+                </li>
+            </ul>
         </div>
       </div>
 
@@ -81,12 +96,18 @@ export default {
             searchText : '',
             finds : [],
             searchedCompanies: [],
+            filterArray: [],
+            checkboxArray: [],
         };
     },
     watch : {
         searchText : function (searchText) {
             return this.searchedCompanies = searchCompanies(this.companies, 'companyName', searchText)
-        }
+        },
+        checkboxArray: function (checkboxArray) {
+            const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => checkboxArray[index]);
+            this.searchedCompanies = filterCompanies(this.companies, tempFilter );
+        },
     },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
@@ -100,7 +121,8 @@ export default {
             sortCompanies(companies)
             sortCompaniesReverse(companies)
             searchCompanies(companies, 'companyName', 'Al')
-            return filterCompanies(companies, ['open', 'close'])
+            filterCompanies(companies, ['open', 'close'])
+            return companies
         }).then(companies => {
             this.companies  = companies
         }).finally(() => {
