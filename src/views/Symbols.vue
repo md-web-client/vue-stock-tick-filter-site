@@ -27,6 +27,14 @@
 
 <script>
 import API from '../api/IEX';
+import _ from 'underscore';
+const searchCompanies = (companies, query) => {
+    return _.filter(companies,
+        (obj) => {
+            return obj.companyName.includes(query)
+        }
+    )
+}
 export default {
     name : "Symbols",
     data () {
@@ -37,7 +45,11 @@ export default {
     },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
-            this.companies = response.data;
+            return response.data;
+        }).then(companies => {
+            return searchCompanies(companies, 'Alaska')
+        }).then(companies => {
+            this.companies  = companies
         }).finally(() => {
             this.loading = false;
         });
