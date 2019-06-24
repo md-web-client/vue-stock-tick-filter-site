@@ -1,8 +1,12 @@
 <template>
     <div>
       <div class="primary-heading-con">
-          <div class="heading">
-              <div class="title">Symbols/Tickers</div>
+        <div class="heading">
+        <div class="title">Symbols/Tickers</div>
+        <input v-model="searchText" />
+<button @click="searchButton">
+<i class="fa fa-search" aria-hidden="true"></i>
+</button>
           </div>
       </div>
 
@@ -27,13 +31,29 @@
 
 <script>
 import API from '../api/IEX';
+
 export default {
     name : "Symbols",
+    methods : {
+        searchButton : function () {
+            this.companies = [this.companies[0]];
+            return true;
+        }
+    },
     data () {
         return {
+            value : '',
             loading : true,
             companies : [],
+            searchText : '',
+            finds : []
         };
+    },
+    watch : {
+        searchText : function () {
+            this.companies = [this.companies[0]];
+            return true;
+        }
     },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
@@ -42,6 +62,7 @@ export default {
             this.loading = false;
         });
     },
+
 }
 </script>
 
