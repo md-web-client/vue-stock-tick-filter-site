@@ -28,12 +28,39 @@
 <script>
 import API from '../api/IEX';
 import _ from 'underscore';
+
 const sortCompaniesReverse = (companies) => {
     return _.sortBy(companies, 'symbol').reverse();
 }
 const sortCompanies = (companies) => {
     return _.sortBy(companies, 'symbol');
 }
+const searchCompanies = (companies, key, query) => {
+    return _.filter(companies,
+        (obj) => {
+            return obj[key].includes(query)
+        }
+    )
+}
+const filterCompanies = (companies, prefix) => {
+    return _.filter(companies,
+        (obj) => {
+            for(let count = 0; count < prefix.length; count++){
+                const key = prefix[count]
+                const valueExists = obj[key] ? true : false
+                if(valueExists) {
+                    console.log({key, valueExists, symbol : obj.symbol})
+                    continue;
+                }
+                else {
+                    return false
+                }
+            }
+            return true
+        }
+    )
+}
+
 export default {
     name : "Symbols",
     data () {
@@ -51,13 +78,15 @@ export default {
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
             return response.data;
-        }).then(companies => {
-            return sortCompaniesReverse(companies)
         })
         .then(companies => {
-            this.companies = companies;
-        })
-        .finally(() => {
+            sortCompanies(companies)
+            sortCompaniesReverse(companies)
+            searchCompanies(companies, 'companyName', 'Al')
+            return filterCompanies(companies, ['open', 'close'])
+        }).then(companies => {
+            this.companies  = companies
+        }).finally(() => {
             this.loading = false;
         });
     },
