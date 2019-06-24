@@ -28,6 +28,12 @@
 <script>
 import API from '../api/IEX';
 import _ from 'underscore';
+const sortCompaniesReverse = (companies) => {
+    return _.sortBy(companies, 'symbol').reverse();
+}
+const sortCompanies = (companies) => {
+    return _.sortBy(companies, 'symbol');
+}
 export default {
     name : "Symbols",
     data () {
@@ -40,7 +46,7 @@ export default {
         API.getComputerHardwareCompanies().then(response => {
             return response.data;
         }).then(companies => {
-            return _.sortBy(companies, 'symbol');
+            return sortCompaniesReverse(companies)
         })
         .then(companies => {
             this.companies = companies;
