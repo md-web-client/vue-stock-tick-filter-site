@@ -42,6 +42,12 @@ export default {
             companies : [],
         };
     },
+    beforeCreate() {
+        console.log('I am beforecreated!');
+    },
+    created() {
+        console.log('I am created!');
+    },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
             return response.data;
@@ -55,6 +61,15 @@ export default {
             this.loading = false;
         });
     },
+    mounted() {
+        console.log('I am now mounted!');
+    },
+    beforeDestroy() {
+        console.log('before the component is destroyed');
+    },
+    destroyed() {
+        console.log('the components gone.');
+    }
 }
 </script>
 
