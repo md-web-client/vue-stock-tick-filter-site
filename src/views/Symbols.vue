@@ -35,7 +35,7 @@ const filterCompanies = (companies, prefix) => {
                 const key = prefix[count]
                 const valueExists = obj[key] ? true : false
                 if(valueExists) {
-                    console.log({key, valueExists, symbol: obj.symbol})
+                    console.log({key, valueExists, symbol : obj.symbol})
                     continue;
                 }
                 else {
@@ -60,11 +60,9 @@ export default {
             return response.data;
         }).then(companies => {
             return filterCompanies(companies, ['open', 'close'])
-        })
-        .then(companies => {
+        }).then(companies => {
             this.companies  = companies
-        })
-        .finally(() => {
+        }).finally(() => {
             this.loading = false;
         });
     },
