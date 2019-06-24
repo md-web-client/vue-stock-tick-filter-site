@@ -27,6 +27,7 @@
 
 <script>
 import API from '../api/IEX';
+import _ from 'underscore';
 export default {
     name : "Symbols",
     data () {
@@ -37,8 +38,14 @@ export default {
     },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
-            this.companies = response.data;
-        }).finally(() => {
+            return response.data;
+        }).then(companies => {
+            return _.sortBy(companies, 'symbol');
+        })
+        .then(companies => {
+            this.companies = companies;
+        })
+        .finally(() => {
             this.loading = false;
         });
     },
