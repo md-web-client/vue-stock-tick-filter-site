@@ -64,13 +64,13 @@ const filterCompanies = (companies, prefix) => {
         }
     )
 }
+const shrink = (companies) => [companies[0]]
 
 export default {
     name : "Symbols",
     methods : {
         searchButton : function () {
-            this.companies = [this.companies[0]];
-            return true;
+            return this.companies = shrink(this.companies);
         }
     },
     data () {
@@ -83,16 +83,9 @@ export default {
         };
     },
     watch : {
-        searchText : function () {
-            this.companies = [this.companies[0]];
-            return true;
+        searchText : function () { 
+            return this.companies = shrink(this.companies); 
         }
-    },
-    beforeCreate() {
-        console.log('I am beforecreated!');
-    },
-    created() {
-        console.log('I am created!');
     },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
@@ -108,16 +101,6 @@ export default {
         }).finally(() => {
             this.loading = false;
         });
-    },
-
-    mounted() {
-        console.log('I am now mounted!');
-    },
-    beforeDestroy() {
-        console.log('before the component is destroyed');
-    },
-    destroyed() {
-        console.log('the components gone.');
     }
 }
 </script>
