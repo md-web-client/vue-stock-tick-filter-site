@@ -11,6 +11,7 @@
             <button @click="searchSymbolButton">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button>
+            <br/><br/>
             <h2>Filter Logic</h2>
             <div class="is-flex">
                 <ul class="centerx">
@@ -45,7 +46,7 @@
                   :key="company.symbol"
                   class="company"
               >
-                  <h5 class="heading is-size-5">{{company.symbol}} : <small class="is-size-7">{{company.companyName}}</small></h5>
+                  <h5 class="heading is-size-5"><a v-bind:href="'https://www.google.com/search?q='+company.companyName+' stock'">{{company.symbol}}</a> : <small class="is-size-7">{{company.companyName}}</small></h5>
                   <div>Open <money :value="company.open"></money></div>
                   <div>Close <money :value="company.close"></money></div>
                   <timestamp :value="company.openTime"></timestamp> - <timestamp :value="company.closeTime"></timestamp>
