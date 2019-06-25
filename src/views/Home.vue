@@ -1,20 +1,25 @@
 <template>
   <div>
-      <div class="primary-heading-con">
-          <div class="heading">
-              <div class="title">Welcome To Your Dev Assessment</div>
-          </div>
-      </div>
-
       <div class="page-content-con has-text-centered m-lg">
-          <h1 class="heading is-size-1">Ready to get started?</h1>
-          <p>Consult the README in the repo for all the instructions you will need</p>
-          <p>Feel free to remove this page, rename things, and change anything. It's your assessment!</p>
+          <h1 class="heading is-size-1">The exciting Vue Stuff can he found <router-link
+                :to="{ name : $ROUTES.SYMBOLS }"
+                exact
+                class="item tooltip is-tooltip-right"
+                data-tooltip="Symbols"
+              >
+                (here)
+              </router-link></h1>
           <div class="m-t-lg">
+            <router-link
+                :to="{ name : $ROUTES.SYMBOLS }"
+                exact
+                class="item tooltip is-tooltip-right"
+                data-tooltip="Symbols"
+            >
               <img src="../assets/image/get-ready.gif"/>
+            </router-link>
           </div>
       </div>
-
   </div>
 </template>
 
@@ -22,7 +27,6 @@
 
 export default {
     name : 'home',
-
     data () {
         return {
         };

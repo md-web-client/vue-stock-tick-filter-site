@@ -2,7 +2,6 @@ const CircularDependencyPlugin = require('circular-dependency-plugin')
 
 module.exports = {
     devServer : {
-        port : 8080,
         host : 'localhost',
     },
     configureWebpack : {
