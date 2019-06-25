@@ -79,7 +79,8 @@ const searchCompanies = (companies, key, query) => {
     if (!query){return companies}
     return _.filter(companies,
         (obj) => {
-            return obj[key].includes(query)
+            // return obj[key].includes(query)
+            return obj[key].toLowerCase().includes(query.toLowerCase())
         }
     )
 }
