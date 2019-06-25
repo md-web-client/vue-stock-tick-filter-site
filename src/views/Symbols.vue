@@ -39,11 +39,12 @@
 
       <div class="page-content-con">
           <loading v-if="loading"></loading>
-          <div v-else>
+          <div v-else style="display: flex;flex-wrap: wrap;padding-left: 10px;padding-right: 10px;">
               <div
                   v-for="company in searchedCompanies"
                   :key="company.symbol"
                   class="company"
+                  style="padding-right: 30px;width: 374.45px;"
               >
                   <h5 class="heading is-size-5"><a v-bind:href="'https://www.google.com/search?q='+company.companyName+' stock'">{{company.symbol}}</a> : <small class="is-size-7">{{company.companyName}}</small></h5>
                   <div>Open <money :value="company.open"></money></div>
