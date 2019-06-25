@@ -2,7 +2,7 @@
     <div>
       <div class="primary-heading-con">
         <div class="heading">
-            <div class="title">Symbols/Tickers</div>
+            <div class="title">Symbols/ Tickers</div>
             <input @click="clearCompany" v-model="searchSymbolText" placeholder="Search Symbol" />
             <button @click="searchCompanyButton">
                 <i class="fa fa-search" aria-hidden="true"></i>
@@ -68,11 +68,11 @@ const sortCompaniesReverse = (companies, key) => {
     return _.sortBy(companies, key).reverse();
 }
 const sort = (companies, key, direction) => {
-    return direction === 'ascend' ?
-    sortCompanies(companies, key) :
-    direction === 'descend' ?
-    sortCompaniesReverse(companies, key) :
-    companies;
+    return direction === 'ascend'
+        ? sortCompanies(companies, key)
+        : direction === 'descend'
+            ? sortCompaniesReverse(companies, key)
+            : companies;
 
 }
 const searchCompanies = (companies, key, query) => {
@@ -101,7 +101,6 @@ const filterCompanies = (companies, prefix) => {
         }
     )
 }
-const shrink = (companies) => [companies[0]]
 
 export default {
     name : "Symbols",
@@ -112,23 +111,23 @@ export default {
         searchCompanyButton : function () {
             // nothing needed to be done.
         },
-        clearCompany: function () {
+        clearCompany : function () {
             this.searchKey = 'symbol'
             this.searchCompanyText = ''
         },
-        clearSymbol: function () {
+        clearSymbol : function () {
             this.searchKey = 'companyName'
             this.searchSymbolText = ''
         },
-        ascend: function () {
+        ascend : function () {
             this.sortKey = 'ascend'
             this.searchedCompanies = sort(this.searchedCompanies, this.searchKey, this.sortKey)
         },
-        descend: function () {
+        descend : function () {
             this.sortKey = 'descend'
             this.searchedCompanies = sort(this.searchedCompanies, this.searchKey, this.sortKey)
         },
-        removeSort: function () {
+        removeSort : function () {
             this.sortKey = 'none'
             const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => this.checkboxArray[index]);
             this.filteredCompanies = filterCompanies(this.companies, tempFilter );
@@ -142,15 +141,15 @@ export default {
             loading : true,
             companies : [],
             searchSymbolText : '',
-            searchCompanyText: '',
-            searchText: '',
+            searchCompanyText : '',
+            searchText : '',
             finds : [],
-            searchedCompanies: [],
-            filteredCompanies: [],
-            filterArray: [],
-            searchKey: 'symbol',
-            sortKey: 'none',
-            checkboxArray: [false, false, false, false],
+            searchedCompanies : [],
+            filteredCompanies : [],
+            filterArray : [],
+            searchKey : 'symbol',
+            sortKey : 'none',
+            checkboxArray : [false, false, false, false],
         };
     },
     watch : {
@@ -164,7 +163,7 @@ export default {
             const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
             return this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, searchCompanyText)
         },
-        checkboxArray: function (checkboxArray) {
+        checkboxArray : function (checkboxArray) {
             const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => checkboxArray[index]);
             this.filteredCompanies = filterCompanies(this.companies, tempFilter );
             const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
@@ -174,14 +173,12 @@ export default {
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
             return response.data;
-        })
-        .then(companies => {
+        }).then(companies => {
             this.filteredCompanies = companies
             this.searchedCompanies = companies
             this.companies = companies
             return companies
-        })
-        .then(companies => {
+        }).then(companies => {
             sortCompanies(companies)
             sortCompaniesReverse(companies)
             filterCompanies(companies, ['open', 'close'])
