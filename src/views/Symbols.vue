@@ -199,8 +199,6 @@ export default {
             sortCompaniesReverse(companies)
             filterCompanies(companies, ['open', 'close'])
             return companies
-        }).then(companies => {
-            this.companies  = companies
         }).finally(() => {
             this.loading = false;
         });

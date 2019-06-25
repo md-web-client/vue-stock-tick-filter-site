@@ -4,15 +4,22 @@ This project is a skeleton project leveraging Vue, Bulma, and Webpack (NPM for d
 
 This project is built in ES6 syntax ([example IDE configuration](https://stackoverflow.com/questions/35425915/how-do-i-enable-es6-syntax-in-webstorm))
 
-To run the project, use :
+
+Dependencies : 
+- npm - [Installation instructions](https://www.npmjs.com/get-npm)
+
 
 ```
+npm install
+
 npm run serve
 ```
 
 
 # Your Mission
-Your going to be using the [IEX API](https://iextrading.com/developer/docs/) to display stock tickers and data!
+Your going to be using the [IEX Cloud API](https://iexcloud.io/docs/api/#collections) to display stock tickers and data!
+
+### Basics
 
 - You can use any IDE of your choice
 - You must use Vue and Bulma
@@ -34,10 +41,9 @@ Use the existing list of symbols being returned on the **Symbols** page to achie
 - Allow performing these actions on the list (do NOT re-fetch the data from the API):
     - **Searching** : On symbol and company name
     - **Sorting** : Ascending and descending on at least 1 data point
-    - **Filtering** : On at least the following fields : 
+    - **Filtering** : Between a range of (at least) the following fields : 
         - "open"
         - "close" 
-        - "primaryExchange"
 
 
 ### Bonus Points
@@ -57,11 +63,11 @@ Use the existing list of symbols being returned on the **Symbols** page to achie
 ### Submission
 - Add any assumptions you made, challenges you over came, or anything note-worthy that you would like to have evaluated and/or discussed. Put these assumptions in the **ASSUMPTIONS.md** file.
 - Commit your changes to your own GitHub profile (or another public code repository) and send a link to the repository to the person that provided you this assessment. 
-
+- **Provide the # of hours you invested in the assessment in your submission**
 
 
 ### Tips
-- Effective us of white space and colors to make the data consumable
+- Effective use of white space and colors to make the data consumable
 - Effective use of coloring to distinguish trends 
 
 
@@ -73,7 +79,7 @@ Getting [lint](https://eslint.org/) errors? Fix them with:
 npm run lint --fix
 ```
 
-#### Foundation
+#### Resources
 [Vue](https://vuejs.org/v2/guide/) : Vue
 
 ##### Libs
@@ -83,4 +89,4 @@ npm run lint --fix
 
 [Moment](https://momentjs.com/docs/) : Date helper
 
-[_](https://underscorejs.org/) : You should know
+[_ (underscore.js)](https://underscorejs.org/) : You should know
