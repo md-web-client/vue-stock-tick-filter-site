@@ -33,7 +33,6 @@
                  <button @click="descend">Descending</button>
                  <button @click="removeSort">Remove Sort</button>
                 </div>
-
             </div>
         </div>
       </div>
@@ -50,6 +49,8 @@
                   <div>Open <money :value="company.open"></money></div>
                   <div>Close <money :value="company.close"></money></div>
                   <timestamp :value="company.openTime"></timestamp> - <timestamp :value="company.closeTime"></timestamp>
+                  <button v-bind:value="company.symbol" @click="exclude">exclude</button>
+
               </div>
           </div>
       </div>
@@ -102,6 +103,9 @@ const filterCompanies = (companies, prefix) => {
         }
     )
 }
+const reject = (companies, list) => {
+    return _.reject(companies, (company) => { return list.includes(company.symbol); })
+}
 
 export default {
     name : "Symbols",
@@ -134,10 +138,14 @@ export default {
             this.filteredCompanies = filterCompanies(this.companies, tempFilter );
             const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
             this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, this.searchText)
+        },
+        exclude : function (event) {
+            this.excludeTickers.push(event.target.value)
         }
     },
     data () {
         return {
+            excludeTickers : [],
             value : '',
             loading : true,
             companies : [],
@@ -157,12 +165,14 @@ export default {
         searchSymbolText : function (searchSymbolText) {
             this.searchText = searchSymbolText;
             const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
-            return this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, searchSymbolText)
+            this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, searchSymbolText)
+            return this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
         },
         searchCompanyText : function (searchCompanyText) {
             this.searchText = searchCompanyText;
             const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
-            return this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, searchCompanyText)
+            this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, searchCompanyText)
+            return this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
         },
         checkboxArray : function (checkboxArray) {
             const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => checkboxArray[index]);
@@ -170,6 +180,10 @@ export default {
             const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
             this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, this.searchText)
         },
+        excludeTickers : function () {
+            this.companies = reject(this.companies, this.excludeTickers)
+            this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
+        }
     },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
@@ -177,6 +191,7 @@ export default {
         }).then(companies => {
             this.filteredCompanies = companies
             this.searchedCompanies = companies
+            this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
             this.companies = companies
             return companies
         }).then(companies => {
