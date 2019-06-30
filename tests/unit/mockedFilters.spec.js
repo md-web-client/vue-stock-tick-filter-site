@@ -30,10 +30,10 @@ describe('Filters for mocked data of the Api', () => {
   })
 
   it('searchCompanies', () => {
-    const search0 = searchCompanies(tenCompanies, 'symbol', '')
-    const search1 = searchCompanies(tenCompanies, 'symbol', 'TKHV')
-    const search2 = searchCompanies(tenCompanies, 'companyName', '')
-    const search3 = searchCompanies(tenCompanies, 'companyName', 'U')
+    const search0 = search(tenCompanies, ['symbol'], '')
+    const search1 = search(tenCompanies, ['symbol'], 'TKHV')
+    const search2 = search(tenCompanies, ['companyName'], '')
+    const search3 = search(tenCompanies, ['companyName'], 'U')
 
     expect(search0).toEqual(search2)
     expect(search1).not.toEqual(search3)

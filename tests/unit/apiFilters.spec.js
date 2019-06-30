@@ -4,15 +4,15 @@ import { notDeepEqual } from 'assert';
 
 
 describe('Filters for the Api', () => {
-  let companies,tempFilter,searchKey,searchText,sortKey;
+  let companies,tempFilter,searchKeyArray,searchText,sortKey;
   let res1,res2,res3;
   beforeAll(async () => {
     let response = await API.getComputerHardwareCompanies();
     companies = response.data;
 
     tempFilter = ['symbol','open', 'close'];
-    searchKey = 'companyName'
-      searchKey = 'symbol'
+    searchKeyArrayArray = ['companyName']
+      searchKeyArray = ['symbol']
     searchText = ''
     sortKey = 'ascend'
       sortKey = 'none'
@@ -20,20 +20,20 @@ describe('Filters for the Api', () => {
 
     const order1 = () => {
       const filteredCompanies = filterCompanies(companies, tempFilter );
-      const sortedAndFiltered = sort(filteredCompanies, searchKey, sortKey)
-      const searchedCompanies = searchCompanies(sortedAndFiltered, searchKey, searchText)
+      const sortedAndFiltered = sort(filteredCompanies, searchKeyArray, sortKey)
+      const searchedCompanies = search(sortedAndFiltered, searchKeyArray, searchText)
       return searchedCompanies
     }
     const order2 = () => {
-      const sortedAndFiltered = sort(companies, searchKey, sortKey)
+      const sortedAndFiltered = sort(companies, searchKeyArray, sortKey)
       const filteredCompanies = filterCompanies(sortedAndFiltered, tempFilter );
-      const searchedCompanies = searchCompanies(filteredCompanies, searchKey, searchText)
+      const searchedCompanies = search(filteredCompanies, searchKeyArray, searchText)
       return searchedCompanies
     }
     const order3 = () => {
-      const searchedCompanies = searchCompanies(companies, searchKey, searchText)
+      const searchedCompanies = search(companies, searchKeyArray, searchText)
       const filteredCompanies = filterCompanies(searchedCompanies, tempFilter );
-      const sortedAndFiltered = sort(filteredCompanies, searchKey, sortKey)
+      const sortedAndFiltered = sort(filteredCompanies, searchKeyArray, sortKey)
       return sortedAndFiltered
     }
     res1 = order1();
