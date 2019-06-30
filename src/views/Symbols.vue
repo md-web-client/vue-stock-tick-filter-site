@@ -37,7 +37,7 @@
           <loading v-if="loading"></loading>
           <div v-else style="display: flex;flex-wrap: wrap;padding-left: 10px;padding-right: 10px;">
               <div
-                  v-for="company in searchedCompanies"
+                  v-for="company in filteredCompanies"
                   :key="company.symbol"
                   class="company"
                   style="padding-right: 30px;width: 374.45px;"
@@ -64,18 +64,12 @@ export default {
         searchButton : function () {},
         ascend : function () {
             this.sortDirection = 'ascend'
-            this.searchedCompanies = sort(this.searchedCompanies, this.sortKey, this.sortDirection)
         },
         descend : function () {
             this.sortDirection = 'descend'
-            this.searchedCompanies = sort(this.searchedCompanies, this.sortKey, this.sortDirection)
         },
         removeSort : function () {
-            this.sortDirection = 'none'
-            const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => this.checkboxArray[index]);
-            this.filteredCompanies = filterCompanies(this.companies, tempFilter );
-            const sortedAndFiltered = sort(this.filteredCompanies, this.sortKey, this.sortDirection);
-            this.searchedCompanies = search(sortedAndFiltered, this.searchKey, this.searchText)
+            this.sortDirection = undefined
         },
         exclude : function (event) {
             this.excludeTickers.push(event.target.value)
@@ -85,43 +79,47 @@ export default {
         return {
             companies : [],
             loading : true,
-
             searchText : '',
             excludeTickers : [],
-
-            searchedCompanies : [],
-            filteredCompanies : [],
-
-            searchKey : 'symbol',
-            sortKey: 'symbol',
-            sortDirection : 'none',
-
+            sortKey : 'symbol',
+            sortDirection : undefined,
+            searchKey : ['symbol', 'companyName'],
             checkboxArray : [false, false, false, false],
         };
-        // filterArray : [],
     },
-    watch : {
-        searchText : function (searchText) {
-            this.searchText = searchText;
-            const sortedAndFiltered = sort(this.filteredCompanies, this.sortKey, this.sortDirection)
-            this.searchedCompanies = search(sortedAndFiltered, this.searchKey, searchText)
-            return this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
-        },
-        checkboxArray : function (checkboxArray) {
-            const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => checkboxArray[index]);
-            this.filteredCompanies = filterCompanies(this.companies, tempFilter );
-            const sortedAndFiltered = sort(this.filteredCompanies, this.sortKey, this.sortDirection)
-            this.searchedCompanies = search(sortedAndFiltered, this.searchKey, this.searchText)
-        },
-        excludeTickers : function () {
-            this.companies = reject(this.companies, this.excludeTickers)
-            this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
+    computed : {
+        filteredCompanies() {
+            const fieldsToFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => this.checkboxArray[index]);
+
+            // base case, no searching or filtering being applied
+            if(this.searchText === '' && fieldsToFilter.length == 0 && !this.excludeTickers == 0 && !this.sortDirection  ){
+                return this.companies;
+            }
+
+            let accum = this.companies;
+
+            if(this.excludeTickers.length > 0) {
+                accum = reject(accum, this.excludeTickers)
+            }
+
+            if( fieldsToFilter.length > 0 ) {
+                accum = filterCompanies(accum, fieldsToFilter );
+            }
+
+            if(this.sortDirection){
+                accum = sort(accum, this.sortKey, this.sortDirection);
+            }
+
+            if(this.searchText !== ''){
+                accum = search(accum, this.searchKey, this.searchText);
+            }
+            return accum;
         }
     },
+
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
             this.companies = response.data;
-            this.searchedCompanies = this.companies
             return response.data;
         }).finally(() => {
             this.loading = false;
