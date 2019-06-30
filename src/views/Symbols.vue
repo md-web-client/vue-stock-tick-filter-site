@@ -58,24 +58,23 @@
 <script>
 import API from '../api/IEX';
 import { sort, search, filterCompanies, reject } from '../lib/apiFilter'
-console.log({search})
 export default {
     name : "Symbols",
     methods : {
         searchButton : function () {},
         ascend : function () {
-            this.sortKey = 'ascend'
-            this.searchedCompanies = sort(this.searchedCompanies, this.searchKey, this.sortKey)
+            this.sortDirection = 'ascend'
+            this.searchedCompanies = sort(this.searchedCompanies, this.sortKey, this.sortDirection)
         },
         descend : function () {
-            this.sortKey = 'descend'
-            this.searchedCompanies = sort(this.searchedCompanies, this.searchKey, this.sortKey)
+            this.sortDirection = 'descend'
+            this.searchedCompanies = sort(this.searchedCompanies, this.sortKey, this.sortDirection)
         },
         removeSort : function () {
-            this.sortKey = 'none'
+            this.sortDirection = 'none'
             const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => this.checkboxArray[index]);
             this.filteredCompanies = filterCompanies(this.companies, tempFilter );
-            const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
+            const sortedAndFiltered = sort(this.filteredCompanies, this.sortKey, this.sortDirection);
             this.searchedCompanies = search(sortedAndFiltered, this.searchKey, this.searchText)
         },
         exclude : function (event) {
@@ -84,33 +83,34 @@ export default {
     },
     data () {
         return {
-            excludeTickers : [],
-            value : '',
-            loading : true,
             companies : [],
-            searchSymbolText : '',
-            searchCompanyText : '',
+            loading : true,
+
             searchText : '',
-            finds : [],
+            excludeTickers : [],
+
             searchedCompanies : [],
             filteredCompanies : [],
-            filterArray : [],
-            searchKey : ['symbol', 'companyName'],
-            sortKey : 'none',
+
+            searchKey : 'symbol',
+            sortKey: 'symbol',
+            sortDirection : 'none',
+
             checkboxArray : [false, false, false, false],
         };
+        // filterArray : [],
     },
     watch : {
         searchText : function (searchText) {
             this.searchText = searchText;
-            const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
+            const sortedAndFiltered = sort(this.filteredCompanies, this.sortKey, this.sortDirection)
             this.searchedCompanies = search(sortedAndFiltered, this.searchKey, searchText)
             return this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
         },
         checkboxArray : function (checkboxArray) {
             const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => checkboxArray[index]);
             this.filteredCompanies = filterCompanies(this.companies, tempFilter );
-            const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
+            const sortedAndFiltered = sort(this.filteredCompanies, this.sortKey, this.sortDirection)
             this.searchedCompanies = search(sortedAndFiltered, this.searchKey, this.searchText)
         },
         excludeTickers : function () {
@@ -120,15 +120,9 @@ export default {
     },
     beforeMount () {
         API.getComputerHardwareCompanies().then(response => {
+            this.companies = response.data;
+            this.searchedCompanies = this.companies
             return response.data;
-        }).then(companies => {
-            this.filteredCompanies = companies
-            this.searchedCompanies = companies
-            this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
-            this.companies = companies
-            return companies
-        }).then(companies => {
-            return companies
         }).finally(() => {
             this.loading = false;
         });
