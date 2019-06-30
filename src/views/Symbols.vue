@@ -3,14 +3,10 @@
       <div class="primary-heading-con">
         <div class="heading">
             <div class="title">Symbols/ Tickers</div>
-            <input @click="clearCompany" v-model="searchSymbolText" placeholder="Search Symbol" />
-            <button @click="searchCompanyButton">
+            <input v-model="searchText" placeholder="Search Tick/Company" />
+            <button @click="searchButton">
                 <i class="fa fa-search" aria-hidden="true"></i>
             </button> &nbsp;&nbsp;&nbsp;&nbsp;
-            <input @click="clearSymbol" v-model="searchCompanyText" placeholder="Search Company Name" />
-            <button @click="searchSymbolButton">
-                <i class="fa fa-search" aria-hidden="true"></i>
-            </button>
             <br/><br/>
             <h2>Filter Logic</h2>
             <div class="is-flex">
@@ -61,24 +57,12 @@
 
 <script>
 import API from '../api/IEX';
-import { sort, searchCompanies, filterCompanies, reject } from '../lib/apiFilter'
+import { sort, search, filterCompanies, reject } from '../lib/apiFilter'
+console.log({search})
 export default {
     name : "Symbols",
     methods : {
-        searchSymbolButton : function () {
-            // nothing needed to be done.
-        },
-        searchCompanyButton : function () {
-            // nothing needed to be done.
-        },
-        clearCompany : function () {
-            this.searchKey = 'symbol'
-            this.searchCompanyText = ''
-        },
-        clearSymbol : function () {
-            this.searchKey = 'companyName'
-            this.searchSymbolText = ''
-        },
+        searchButton : function () {},
         ascend : function () {
             this.sortKey = 'ascend'
             this.searchedCompanies = sort(this.searchedCompanies, this.searchKey, this.sortKey)
@@ -92,7 +76,7 @@ export default {
             const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => this.checkboxArray[index]);
             this.filteredCompanies = filterCompanies(this.companies, tempFilter );
             const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
-            this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, this.searchText)
+            this.searchedCompanies = search(sortedAndFiltered, this.searchKey, this.searchText)
         },
         exclude : function (event) {
             this.excludeTickers.push(event.target.value)
@@ -111,29 +95,23 @@ export default {
             searchedCompanies : [],
             filteredCompanies : [],
             filterArray : [],
-            searchKey : 'symbol',
+            searchKey : ['symbol', 'companyName'],
             sortKey : 'none',
             checkboxArray : [false, false, false, false],
         };
     },
     watch : {
-        searchSymbolText : function (searchSymbolText) {
-            this.searchText = searchSymbolText;
+        searchText : function (searchText) {
+            this.searchText = searchText;
             const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
-            this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, searchSymbolText)
-            return this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
-        },
-        searchCompanyText : function (searchCompanyText) {
-            this.searchText = searchCompanyText;
-            const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
-            this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, searchCompanyText)
+            this.searchedCompanies = search(sortedAndFiltered, this.searchKey, searchText)
             return this.searchedCompanies = reject(this.searchedCompanies, this.excludeTickers)
         },
         checkboxArray : function (checkboxArray) {
             const tempFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => checkboxArray[index]);
             this.filteredCompanies = filterCompanies(this.companies, tempFilter );
             const sortedAndFiltered = sort(this.filteredCompanies, this.searchKey, this.sortKey)
-            this.searchedCompanies = searchCompanies(sortedAndFiltered, this.searchKey, this.searchText)
+            this.searchedCompanies = search(sortedAndFiltered, this.searchKey, this.searchText)
         },
         excludeTickers : function () {
             this.companies = reject(this.companies, this.excludeTickers)
