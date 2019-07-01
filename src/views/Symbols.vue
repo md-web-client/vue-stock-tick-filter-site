@@ -3,10 +3,11 @@
       <div class="primary-heading-con">
         <div class="heading">
             <div class="title">Symbols/ Tickers</div>
-            <input v-model="searchText" placeholder="Search Tick/Company" />
+            <input v-model="searchText" placeholder="Search Tick/Company" />&nbsp;
             <button @click="searchButton">
                 <i class="fa fa-search" aria-hidden="true"></i>
-            </button> &nbsp;&nbsp;&nbsp;&nbsp;
+            </button> &nbsp;
+            <button v-if="excludeTickers" @click="resetTickers">Restore Ignored Tickers</button>
             <br/><br/>
             <h2>Filter Logic</h2>
             <div class="is-flex">
@@ -23,12 +24,11 @@
                     <li>
                         <input type="checkbox" v-model="checkboxArray[3]" /> Primary Exchange
                     </li>
-                </ul>
+                </ul>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div style="display: flex; flex-direction: column; justify-content: space-between;">
                  <button @click="ascend">Ascending</button>
                  <button @click="descend">Descending</button>
                  <button @click="removeSort">Remove Sort</button>
-                 <button @click="resetTickers">Return All Ignored Tickers</button>
                 </div>
             </div>
         </div>
