@@ -12,16 +12,16 @@
             <div class="is-flex">
                 <ul class="centerx">
                     <li>
-                        <input type="checkbox" v-model="checkboxArray[0]" /> Symbol
+                        <input type="checkbox" id="symbol" value="symbol" v-model="fieldsToFilter" /> Symbol
                     </li>
                     <li>
-                        <input type="checkbox" v-model="checkboxArray[1]" /> Open
+                        <input type="checkbox" id="open" value="open" v-model="fieldsToFilter" /> Open
                     </li>
                     <li>
-                        <input type="checkbox" v-model="checkboxArray[2]" /> Close
+                        <input type="checkbox" id="close" value="close" v-model="fieldsToFilter" /> Close
                     </li>
                     <li>
-                        <input type="checkbox" v-model="checkboxArray[3]" /> Primary Exchange
+                        <input type="checkbox" id="primaryExchange" value="primaryExchange" v-model="fieldsToFilter" /> Primary Exchange
                     </li>
                 </ul>
                 <div style="display: flex; flex-direction: column; justify-content: space-between;">
@@ -89,15 +89,13 @@ export default {
             sortKey : 'symbol',
             sortDirection : undefined,
             searchKey : ['symbol', 'companyName'],
-            checkboxArray : [false, false, false, false],
+            fieldsToFilter : [],
         };
     },
     computed : {
         filteredCompanies() {
-            const fieldsToFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => this.checkboxArray[index]);
-
             // base case, no searching or filtering being applied
-            if(this.searchText === '' && fieldsToFilter.length == 0 && this.excludeTickers == 0 && !this.sortDirection  ){
+            if(this.searchText === '' && this.fieldsToFilter.length == 0 && this.excludeTickers == 0 && !this.sortDirection  ){
                 return this.companies;
             }
 
@@ -108,8 +106,8 @@ export default {
                 accum = reject(accum, this.excludeTickers)
             }
 
-            if( fieldsToFilter.length > 0 ) {
-                accum = filterCompanies(accum, fieldsToFilter );
+            if( this.fieldsToFilter.length > 0 ) {
+                accum = filterCompanies(accum, this.fieldsToFilter );
             }
 
             if(this.sortDirection){
