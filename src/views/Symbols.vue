@@ -28,6 +28,7 @@
                  <button @click="ascend">Ascending</button>
                  <button @click="descend">Descending</button>
                  <button @click="removeSort">Remove Sort</button>
+                 <button @click="resetTickers">Return All Ignored Tickers</button>
                 </div>
             </div>
         </div>
@@ -72,7 +73,11 @@ export default {
             this.sortDirection = undefined
         },
         exclude : function (event) {
-            this.excludeTickers.push(event.target.value)
+            this.excludeTickers += ' ' + (event.target.value)
+        },
+        resetTickers : function(event) {
+            localStorage.excludeTickers = ''
+            this.excludeTickers = ''
         }
     },
     data () {
@@ -80,7 +85,7 @@ export default {
             companies : [],
             loading : true,
             searchText : '',
-            excludeTickers : [],
+            excludeTickers : '',
             sortKey : 'symbol',
             sortDirection : undefined,
             searchKey : ['symbol', 'companyName'],
@@ -92,13 +97,14 @@ export default {
             const fieldsToFilter = ['symbol','open', 'close', 'primaryExchange'].filter( (value, index) => this.checkboxArray[index]);
 
             // base case, no searching or filtering being applied
-            if(this.searchText === '' && fieldsToFilter.length == 0 && !this.excludeTickers == 0 && !this.sortDirection  ){
+            if(this.searchText === '' && fieldsToFilter.length == 0 && this.excludeTickers == 0 && !this.sortDirection  ){
                 return this.companies;
             }
 
             let accum = this.companies;
 
             if(this.excludeTickers.length > 0) {
+                localStorage.excludeTickers = this.excludeTickers;
                 accum = reject(accum, this.excludeTickers)
             }
 
@@ -114,7 +120,7 @@ export default {
                 accum = search(accum, this.searchKey, this.searchText);
             }
             return accum;
-        }
+        },
     },
 
     beforeMount () {
@@ -124,7 +130,12 @@ export default {
         }).finally(() => {
             this.loading = false;
         });
-    }
+    },
+    mounted() {
+        if(localStorage.excludeTickers) {
+            this.excludeTickers = localStorage.excludeTickers;
+        }
+    },
 }
 </script>
 
