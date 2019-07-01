@@ -35,8 +35,8 @@ const filterCompanies = (companies, keyArr) => {
     )
 }
 const reject = (companies, stringList) => {
-    return _.reject(companies, (company) => { 
-        return stringList.includes(company.symbol); 
+    return _.reject(companies, (company) => {
+        return stringList.includes(company.symbol);
     })
 }
 export { sort, search, filterCompanies, reject }

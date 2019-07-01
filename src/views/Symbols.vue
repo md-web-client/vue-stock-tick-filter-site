@@ -75,7 +75,7 @@ export default {
         exclude : function (event) {
             this.excludeTickers += ' ' + (event.target.value)
         },
-        resetTickers : function(event) {
+        resetTickers : function() {
             localStorage.excludeTickers = ''
             this.excludeTickers = ''
         }
