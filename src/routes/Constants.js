@@ -1,4 +1,4 @@
 export default {
-    HOME : 'home',
-    SYMBOLS : 'symbols',
+  HOME : 'home',
+  SYMBOLS : 'symbols',
 }

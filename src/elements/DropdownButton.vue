@@ -28,57 +28,57 @@
 
 <script>
 export default {
-    name : 'DropdownButton',
-    data () {
-        return {
-            active : false,
-            active_icon_class : "fa fa-angle-up",
-            inactive_icon_class : "fa fa-angle-down",
-        };
+  name : 'DropdownButton',
+  data () {
+    return {
+      active : false,
+      active_icon_class : "fa fa-angle-up",
+      inactive_icon_class : "fa fa-angle-down",
+    };
+  },
+  props : {
+    headingText : {
+      type : String,
+      required : false,
     },
-    props : {
-        headingText : {
-            type : String,
-            required : false,
-        },
-        iconClass : {
-            type : String,
-            required : false,
-        },
-        buttonClass : {
-            type : String,
-            required : false,
-        },
-        rightAligned : {
-            type : Boolean,
-            default : false,
-        },
+    iconClass : {
+      type : String,
+      required : false,
     },
-    computed : {
-        toggleClass () {
-            if(this.iconClass){
-                return this.iconClass;
-            }
-            return this.active ? this.active_icon_class : this.inactive_icon_class;
-        },
+    buttonClass : {
+      type : String,
+      required : false,
     },
-    methods : {
-        toggle () {
-            if(!this.active){
-                this.active = true;
-                window.addEventListener('click', this.close, { passive : true })
-            } else {
-                this.active = false;
-                window.removeEventListener('click', this.close);
-            }
-        },
-        close (event) {
-            if(!this.$refs.dropdown.contains(event.target)){
-                this.active = false;
-                window.removeEventListener('click', this.close);
-            }
-        }
+    rightAligned : {
+      type : Boolean,
+      default : false,
     },
+  },
+  computed : {
+    toggleClass () {
+      if(this.iconClass){
+        return this.iconClass;
+      }
+      return this.active ? this.active_icon_class : this.inactive_icon_class;
+    },
+  },
+  methods : {
+    toggle () {
+      if(!this.active){
+        this.active = true;
+        window.addEventListener('click', this.close, { passive : true })
+      } else {
+        this.active = false;
+        window.removeEventListener('click', this.close);
+      }
+    },
+    close (event) {
+      if(!this.$refs.dropdown.contains(event.target)){
+        this.active = false;
+        window.removeEventListener('click', this.close);
+      }
+    }
+  },
 };
 </script>
 

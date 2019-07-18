@@ -8,12 +8,12 @@
 <script>
 
 export default {
-    name : 'app',
-    computed : {
-        layout () {
-            return this.$route.meta && this.$route.meta.layout ? this.$route.meta.layout : 'AppLayout';
-        }
-    },
+  name : 'app',
+  computed : {
+    layout () {
+      return this.$route.meta && this.$route.meta.layout ? this.$route.meta.layout : 'AppLayout';
+    }
+  },
 }
 </script>
 

@@ -63,39 +63,39 @@
 import API from "../api/IEX";
 import { sort, search, filterCompanies, reject } from "../lib/apiFilter";
 export default {
-  name: "Symbols",
-  methods: {
-    searchButton: function() {},
-    ascend: function() {
+  name : "Symbols",
+  methods : {
+    searchButton : function() {},
+    ascend : function() {
       this.sortDirection = "ascend";
     },
-    descend: function() {
+    descend : function() {
       this.sortDirection = "descend";
     },
-    removeSort: function() {
+    removeSort : function() {
       this.sortDirection = undefined;
     },
-    exclude: function(event) {
+    exclude : function(event) {
       this.excludeTickers += " " + event.target.value;
     },
-    resetTickers: function() {
+    resetTickers : function() {
       localStorage.excludeTickers = "";
       this.excludeTickers = "";
     }
   },
   data() {
     return {
-      companies: [],
-      loading: true,
-      searchText: "",
-      excludeTickers: "",
-      sortKey: "symbol",
-      sortDirection: undefined,
-      searchKey: ["symbol", "companyName"],
-      fieldsToFilter: []
+      companies : [],
+      loading : true,
+      searchText : "",
+      excludeTickers : "",
+      sortKey : "symbol",
+      sortDirection : undefined,
+      searchKey : ["symbol", "companyName"],
+      fieldsToFilter : []
     };
   },
-  computed: {
+  computed : {
     filteredCompanies() {
       const {
         searchText,
@@ -110,10 +110,10 @@ export default {
 
       // base case, no searching or filtering being applied
       if (
-        searchText === "" &&
-        fieldsToFilter.length == 0 &&
-        excludeTickers == 0 &&
-        !sortDirection
+        searchText === ""
+        && fieldsToFilter.length == 0
+        && excludeTickers == 0
+        && !sortDirection
       ) {
         return this.companies;
       }

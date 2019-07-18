@@ -3,20 +3,20 @@
 </template>
 <script>
 export default {
-    name : "DocumentTitle",
-    props : {
-        value : {
-            type : String,
-            required : true,
-        },
+  name : "DocumentTitle",
+  props : {
+    value : {
+      type : String,
+      required : true,
     },
-    mounted () {
-        document.title = this.value;
+  },
+  mounted () {
+    document.title = this.value;
+  },
+  watch : {
+    value : function() {
+      document.title = this.value;
     },
-    watch : {
-        value : function() {
-            document.title = this.value;
-        },
-    },
+  },
 }
 </script>

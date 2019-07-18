@@ -9,16 +9,16 @@
 
 <script>
 export default {
-    name : 'Loading',
-    props : {
-        size : {
-            type : String,
-            default : 'is-large'
-        },
-        fa : {
-            type : String,
-            default : 'fa-2x'
-        }
+  name : 'Loading',
+  props : {
+    size : {
+      type : String,
+      default : 'is-large'
+    },
+    fa : {
+      type : String,
+      default : 'fa-2x'
     }
+  }
 }
 </script>

@@ -4,20 +4,20 @@ import Vuex from 'vuex'
 Vue.use(Vuex);
 
 function initialState() {
-    return {
-    };
+  return {
+  };
 }
 
 export default new Vuex.Store({
-    state : {
-        ...initialState()
+  state : {
+    ...initialState()
+  },
+  mutations : {
+    resetState : (state) => {
+      const s = initialState();
+      Object.keys(s).forEach(key => state[key] = s[key]);
     },
-    mutations : {
-        resetState : (state) => {
-            const s = initialState();
-            Object.keys(s).forEach(key => state[key] = s[key]);
-        },
-    },
-    actions : {
-    }
+  },
+  actions : {
+  }
 })

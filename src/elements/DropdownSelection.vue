@@ -37,62 +37,62 @@
 
 <script>
 export default {
-    name : 'DropdownSelection',
-    data () {
-        return {
-            active : false,
-        };
+  name : 'DropdownSelection',
+  data () {
+    return {
+      active : false,
+    };
+  },
+  props : {
+    selections : {
+      type : Array,
+      required : true,
     },
-    props : {
-        selections : {
-            type : Array,
-            required : true,
-        },
-        clazz : {
-            type : String,
-            required : false,
-            default : ''
-        },
-        rightAligned : {
-            type : Boolean,
-            default : false,
-        },
-        value : null
+    clazz : {
+      type : String,
+      required : false,
+      default : ''
     },
-    computed : {
-        icons(){
-            return {
-                active_class : 'fa fa-angle-up',
-                inactive_class : 'fa fa-angle-down'
-            }
-        }
+    rightAligned : {
+      type : Boolean,
+      default : false,
     },
-    methods : {
-        toggle () {
-            if(!this.active){
-                this.active = true;
-                window.addEventListener('click', this.close, { passive : true })
-            } else {
-                this.active = false;
-                window.removeEventListener('click', this.close);
-            }
-        },
-        close (event) {
-            if(!this.$refs.dropdown.contains(event.target)){
-                this.active = false;
-                window.removeEventListener('click', this.close);
-            }
-        },
-        select(selection){
-            this.$emit('input', selection);
-            this.$emit('change', selection);
-        },
-        isSelected(selection){
-            if(this.value && selection){
-                return this.value.id === selection.id;
-            }
-            return false;
-        },
+    value : null
+  },
+  computed : {
+    icons(){
+      return {
+        active_class : 'fa fa-angle-up',
+        inactive_class : 'fa fa-angle-down'
+      }
+    }
+  },
+  methods : {
+    toggle () {
+      if(!this.active){
+        this.active = true;
+        window.addEventListener('click', this.close, { passive : true })
+      } else {
+        this.active = false;
+        window.removeEventListener('click', this.close);
+      }
     },
+    close (event) {
+      if(!this.$refs.dropdown.contains(event.target)){
+        this.active = false;
+        window.removeEventListener('click', this.close);
+      }
+    },
+    select(selection){
+      this.$emit('input', selection);
+      this.$emit('change', selection);
+    },
+    isSelected(selection){
+      if(this.value && selection){
+        return this.value.id === selection.id;
+      }
+      return false;
+    },
+  },
 };
 </script>

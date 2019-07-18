@@ -12,16 +12,16 @@
 
 <script>
 export default {
-    name : 'modal',
-    props : {
-        active : {
-            type : Boolean,
-            required : true,
-        },
-        close : {
-            type : Function,
-            required : false,
-        },
+  name : 'modal',
+  props : {
+    active : {
+      type : Boolean,
+      required : true,
     },
+    close : {
+      type : Function,
+      required : false,
+    },
+  },
 }
 </script>
