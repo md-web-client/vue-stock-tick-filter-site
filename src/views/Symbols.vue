@@ -97,46 +97,42 @@ export default {
   },
   computed : {
     filteredCompanies() {
-      const {
-        searchText,
-        searchKey,
-        fieldsToFilter,
-        excludeTickers,
-        sortDirection,
-        sortKey,
-        companies
-      } = this;
+      const { searchText, searchKey, fieldsToFilter, excludeTickers, sortDirection, sortKey, companies } = this;
       localStorage.excludeTickers = excludeTickers;
 
-      // base case, no searching or filtering being applied
-      if (
-        searchText === ""
-        && fieldsToFilter.length == 0
-        && excludeTickers == 0
-        && !sortDirection
-      ) {
-        return this.companies;
+      // if base case reached: no searching or filtering applied
+      const baseCase = ({ excludeTickers, fieldsToFilter, sortDirection, searchText }) =>
+        excludeTickers === ""
+          && fieldsToFilter.length === 0
+          && sortDirection === undefined
+          && searchText === ""
+
+      // sort/filter operations:
+      const handleFilter = ({ excludeTickers, fieldsToFilter, sortDirection, sortKey, searchText, searchKey }) => {
+        let accum = companies;
+
+        if (excludeTickers.length > 0) {
+          accum = reject(accum, excludeTickers, 'symbol');
+        }
+
+        if (fieldsToFilter.length > 0) {
+          accum = filterCompanies(accum, fieldsToFilter);
+        }
+
+        if (sortDirection) {
+          accum = sort(accum, sortKey, sortDirection);
+        }
+
+        if (searchText !== "") {
+          accum = search(accum, searchKey, searchText);
+        }
+
+        return accum;
       }
 
-      let accum = companies;
-
-      if (excludeTickers.length > 0) {
-        accum = reject(accum, excludeTickers, 'symbol');
-      }
-
-      if (fieldsToFilter.length > 0) {
-        accum = filterCompanies(accum, fieldsToFilter);
-      }
-
-      if (sortDirection) {
-        accum = sort(accum, sortKey, sortDirection);
-      }
-
-      if (searchText !== "") {
-        accum = search(accum, searchKey, searchText);
-      }
-
-      return accum;
+      return baseCase({ excludeTickers, fieldsToFilter, sortDirection, searchText })
+        ? this.companies
+        : handleFilter({ excludeTickers, fieldsToFilter, sortDirection, sortKey, searchText, searchKey })
     }
   },
 
