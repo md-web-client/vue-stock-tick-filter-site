@@ -27,7 +27,7 @@ const search = (companies, keyArr, query) => {
       ));
       return keysFoundForCompany.length > 0
       // return orLogic(keysFoundForCompany.length, keyArr.length)
-  });
+    });
   return resultCompanies;
 };
 
