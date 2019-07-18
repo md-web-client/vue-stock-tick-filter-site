@@ -21,53 +21,53 @@
 
 <script>
 export default {
-    name : "ConfirmModal",
-    props : {
-        active : {
-            type : Boolean,
-            required : true,
-        },
-        close : {
-            type : Function,
-            required : true
-        },
-        callback : {
-            type : Function,
-            required : true,
-        },
-        loading : {
-            type : Boolean,
-            required : true,
-        },
-        yesText : {
-            type : String,
-            required : false,
-            default : 'YES',
-        },
-        noText : {
-            type : String,
-            required : false,
-            default : 'NO',
-        },
-        hideButtons : {
-            type : Boolean,
-            required : false,
-            default : false,
-        },
-        showAfterSuccessMessage : {
-            type : Boolean,
-            required : false,
-            default : false,
-        },
+  name : "ConfirmModal",
+  props : {
+    active : {
+      type : Boolean,
+      required : true,
     },
-    methods : {
-        closeWrapper () {
-            if(this.loading){
-                return;
-            }
-            this.close();
-        },
+    close : {
+      type : Function,
+      required : true
     },
+    callback : {
+      type : Function,
+      required : true,
+    },
+    loading : {
+      type : Boolean,
+      required : true,
+    },
+    yesText : {
+      type : String,
+      required : false,
+      default : 'YES',
+    },
+    noText : {
+      type : String,
+      required : false,
+      default : 'NO',
+    },
+    hideButtons : {
+      type : Boolean,
+      required : false,
+      default : false,
+    },
+    showAfterSuccessMessage : {
+      type : Boolean,
+      required : false,
+      default : false,
+    },
+  },
+  methods : {
+    closeWrapper () {
+      if(this.loading){
+        return;
+      }
+      this.close();
+    },
+  },
 }
 </script>
 

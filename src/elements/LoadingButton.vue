@@ -6,21 +6,21 @@
 
 <script>
 export default {
-    name : "LoadingButton",
-    props : {
-        loading : {
-            type : Boolean,
-            required : true,
-        },
+  name : "LoadingButton",
+  props : {
+    loading : {
+      type : Boolean,
+      required : true,
     },
-    methods : {
-        onClick () {
-            if(this.loading){
-                return;
-            }
-            this.$emit('click');
-        },
+  },
+  methods : {
+    onClick () {
+      if(this.loading){
+        return;
+      }
+      this.$emit('click');
     },
+  },
 }
 </script>
 

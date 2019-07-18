@@ -52,7 +52,7 @@ Vue.use(VueNotification);
 axios.interceptors.response.use(interceptors.success, interceptors.error);
 
 new Vue({
-    router,
-    store,
-    render : h => h(App)
+  router,
+  store,
+  render : h => h(App)
 }).$mount('#app')

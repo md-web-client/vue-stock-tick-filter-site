@@ -6,6 +6,6 @@
 
 <script>
 export default {
-    name : 'NoLayout',
+  name : 'NoLayout',
 };
 </script>
