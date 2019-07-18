@@ -12,18 +12,10 @@
             <h2>Filter Logic</h2>
             <div class="is-flex">
                 <ul class="centerx">
-                    <li>
-                        <input type="checkbox" id="symbol" value="symbol" v-model="fieldsToFilter" /> Symbol
-                    </li>
-                    <li>
-                        <input type="checkbox" id="open" value="open" v-model="fieldsToFilter" /> Open
-                    </li>
-                    <li>
-                        <input type="checkbox" id="close" value="close" v-model="fieldsToFilter" /> Close
-                    </li>
-                    <li>
-                        <input type="checkbox" id="primaryExchange" value="primaryExchange" v-model="fieldsToFilter" /> Primary Exchange
-                    </li>
+                    <li><input type="checkbox" id="symbol" value="symbol" v-model="fieldsToFilter" /> Symbol</li>
+                    <li><input type="checkbox" id="open" value="open" v-model="fieldsToFilter" /> Open</li>
+                    <li><input type="checkbox" id="close" value="close" v-model="fieldsToFilter" /> Close</li>
+                    <li><input type="checkbox" id="primaryExchange" value="primaryExchange" v-model="fieldsToFilter" /> Primary Exchange</li>
                 </ul>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div style="display: flex; flex-direction: column; justify-content: space-between;">
                  <button @click="ascend">Ascending</button>
@@ -94,29 +86,30 @@ export default {
     },
     computed : {
         filteredCompanies() {
+            const { searchText, searchKey, fieldsToFilter, excludeTickers, sortDirection, sortKey, companies } = this
+            localStorage.excludeTickers = excludeTickers;
+
             // base case, no searching or filtering being applied
-            if(this.searchText === '' && this.fieldsToFilter.length == 0 && this.excludeTickers == 0 && !this.sortDirection  ){
-                return this.companies;
+            if( searchText === '' && fieldsToFilter.length == 0 && excludeTickers == 0 && !sortDirection ){return this.companies;}
+
+            let accum = companies;
+
+            if(excludeTickers.length > 0){
+                accum = reject(accum, excludeTickers)
             }
 
-            let accum = this.companies;
-
-            if(this.excludeTickers.length > 0) {
-                localStorage.excludeTickers = this.excludeTickers;
-                accum = reject(accum, this.excludeTickers)
+            if(fieldsToFilter.length > 0){
+                accum = filterCompanies(accum, fieldsToFilter );
             }
 
-            if( this.fieldsToFilter.length > 0 ) {
-                accum = filterCompanies(accum, this.fieldsToFilter );
+            if(sortDirection){
+                accum = sort(accum, sortKey, sortDirection);
             }
 
-            if(this.sortDirection){
-                accum = sort(accum, this.sortKey, this.sortDirection);
+            if(searchText !== ''){
+                accum = search(accum, searchKey, searchText);
             }
 
-            if(this.searchText !== ''){
-                accum = search(accum, this.searchKey, this.searchText);
-            }
             return accum;
         },
     },
@@ -128,12 +121,10 @@ export default {
         }).finally(() => {
             this.loading = false;
         });
-    },
-    mounted() {
         if(localStorage.excludeTickers) {
             this.excludeTickers = localStorage.excludeTickers;
         }
-    },
+    }
 }
 </script>
 
