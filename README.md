@@ -13,12 +13,14 @@ The test plugin may be added by Vue CLI after the initial project creation using
 3) Vue.register(component) registration.
 4) Dynamic component routing in vue.
 5) Vue Instance Variables.
+6) Vue Local Storage State. - note localStorage saves your content as a string.
+7) Computed Properties vs Watchers
+8) Filter Search and Sort can be found [here](https://github.com/MichaelDimmitt/vue-stock-tick-filter-website/blob/master/src/lib/apiFilter.js)
+9) localStorage and computed properties example can be found [here](https://github.com/MichaelDimmitt/vue-stock-tick-filter-website/blob/master/src/views/Symbols.vue)
 
 To Be Done
-1) Vue Local Storage State.
-2) Vuex.
-3) Computed Properties vs Watchers
-4) ** Let me know if you think of more things [to do in Issues](https://github.com/MichaelDimmitt/vue-stock-tick-filter-website/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) **
+1) Vuex.
+2) ** Let me know if you think of more things [to do in Issues](https://github.com/MichaelDimmitt/vue-stock-tick-filter-website/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) **
 
 ## Installation/Usage:
 
