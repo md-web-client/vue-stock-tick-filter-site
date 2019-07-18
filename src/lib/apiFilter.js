@@ -13,30 +13,37 @@ const sort = (companies, key, direction) => {
             : companies;
 
 }
+
 const search = (companies, keyArr, query) => {
     if (!query){return companies}
-    return _.filter(companies,
-        (obj) => {
+    const resultCompanies = _.filter(companies,
+        (company) => {
             const result = keyArr.filter(key => (
-                obj[key].toLowerCase().includes(query.toLowerCase())
+                company[key].toLowerCase().includes(query.toLowerCase())
             ))
             return result.length > 0
         }
-    )
-}
+    );
+    return resultCompanies;
+};
+
 const filterCompanies = (companies, keyArr) => {
-    return _.filter(companies,
-        (obj) => {
+    const resultCompanies = _.filter(companies,
+        (company) => {
             const result = keyArr.filter(key => (
-                obj[key] ? true : false
+                company[key] ? true : false
             ))
             return result.length === keyArr.length
         }
-    )
-}
-const reject = (companies, stringList) => {
+    );
+    return resultCompanies;
+};
+
+
+const reject = (companies, stringList, key) => {
     return _.reject(companies, (company) => {
-        return stringList.includes(company.symbol);
+        return stringList.includes(company[key]);
     })
 }
+
 export { sort, search, filterCompanies, reject }

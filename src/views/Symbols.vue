@@ -121,7 +121,7 @@ export default {
       let accum = companies;
 
       if (excludeTickers.length > 0) {
-        accum = reject(accum, excludeTickers);
+        accum = reject(accum, excludeTickers, 'symbol');
       }
 
       if (fieldsToFilter.length > 0) {
