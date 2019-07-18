@@ -7,7 +7,7 @@ This project is built in ES6 syntax ([example IDE configuration](https://stackov
 This project was a development assignment that turned into a good vue project for teaching others.
 
 Content added to the project:
-1) Testing, https://github.com/MichaelDimmitt/vue-stock-tick-filter-website/pull/5 <br/>
+1) Testing, https://github.com/MichaelDimmitt/vue-stock-tick-filter-site/pull/5 <br/>
 The test plugin may be added by Vue CLI after the initial project creation using: `vue add @vue/unit-jest`
 2) All of the lifecycle methods are demonstrated in the project.
 3) Vue.register(component) registration.
@@ -15,12 +15,12 @@ The test plugin may be added by Vue CLI after the initial project creation using
 5) Vue Instance Variables.
 6) Vue Local Storage State. - note localStorage saves your content as a string.
 7) Computed Properties vs Watchers
-8) Filter Search and Sort can be found [here](https://github.com/MichaelDimmitt/vue-stock-tick-filter-website/blob/master/src/lib/apiFilter.js)
-9) localStorage and computed properties example can be found [here](https://github.com/MichaelDimmitt/vue-stock-tick-filter-website/blob/master/src/views/Symbols.vue)
+8) Filter Search and Sort can be found [here](https://github.com/MichaelDimmitt/vue-stock-tick-filter-site/blob/master/src/lib/apiFilter.js)
+9) localStorage and computed properties example can be found [here](https://github.com/MichaelDimmitt/vue-stock-tick-filter-site/blob/master/src/views/Symbols.vue)
 
 To Be Done
 1) Vuex.
-2) ** Let me know if you think of more things [to do in Issues](https://github.com/MichaelDimmitt/vue-stock-tick-filter-website/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) **
+2) ** Let me know if you think of more things [to do in Issues](https://github.com/MichaelDimmitt/vue-stock-tick-filter-site/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc) **
 
 ## Installation/Usage:
 
@@ -29,8 +29,8 @@ Dependencies :
 
 ```bash
 {
-git clone https://github.com/MichaelDimmitt/vue-stock-tick-filter-website.git;
-cd vue-stock-tick-filter-website;
+git clone https://github.com/MichaelDimmitt/vue-stock-tick-filter-site.git;
+cd vue-stock-tick-filter-site;
 npm install;
 npm run serve;
 }
